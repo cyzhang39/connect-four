@@ -3,7 +3,13 @@
   flex-direction: column;
   align-items: center;
   font-family: Arial, sans-serif;
-  background-color: darkgreen;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(128, 214, 128);
+}
+
+body{
+  background-color: rgb(128, 214, 128);
 }
 
 .board {
@@ -39,11 +45,11 @@
 }
 
 .yellow {
-  background-color: #f3a812;
+  background-color: #f39c12;
 }
 
 .empty {
-  background-color: #c7c7c7;
+  background-color: #f7f4f4;
 }
 
 
@@ -51,11 +57,13 @@
   font-size: xx-large;
   margin-top: -70px;
   margin-left: 1000px;
+  font-family: 'Trebuchet MS', sans-serif;
 }
 
 .turn-message {
   /* margin-bottom: 1000px; */
   font-weight: bold;
+  font-family: 'Trebuchet MS', sans-serif;
 }
 
 .game-state-message {
