@@ -1,3 +1,6 @@
+use std::collections::hash_map::DefaultHasher;
+use std::hash::{Hash, Hasher};
+
 const HEIGHT: usize = 6; 
 const WIDTH: usize = 7;
 
@@ -60,8 +63,15 @@ impl BitBoard {
     }
 
     pub fn get_unique_key(&self) -> u64 {
-        //let current = if self.red_turn{self.player_mask} else {self.player_mask ^ self.total_mask};
-        let current = self.player_mask;
+        // let board1 = self.player_mask;
+        // let board2 = self.total_mask;
+
+        // let mut hasher = DefaultHasher::new();
+        // board1.hash(&mut hasher);
+        // board2.hash(&mut hasher);
+        // hasher.finish()
+        let current = if self.red_turn{self.player_mask} else {self.player_mask ^ self.total_mask};
+        //let current = self.player_mask;
         return current + self.total_mask;
     }
 
@@ -113,7 +123,7 @@ impl BitBoard {
     }
 
     pub fn is_draw(&self) -> bool {
-        return self.num_moves == (WIDTH * HEIGHT);
+        return self.num_moves >= WIDTH*HEIGHT - 1;
     }
 
     pub fn get_num_moves(&self) -> usize {

@@ -32,7 +32,7 @@ impl Component for Connect4 {
             bit_board: BitBoard::new(),
             game_over: false,
             ai: AIGame::new(),
-            trans_table: TranspositionTable::new(8388593),
+            trans_table: TranspositionTable::new(83885931),
         }
     }
 
@@ -65,8 +65,7 @@ impl Component for Connect4 {
     fn change(&mut self, _: Self::Properties) -> ShouldRender {
         // self.array_board = ArrayBoard::new();
         self.bit_board = BitBoard::new();
-        self.trans_table = TranspositionTable::new(8388593);
-
+        self.trans_table = TranspositionTable::new(83885931);
         true
     }
 
@@ -164,7 +163,7 @@ impl Connect4 {
             GameState::Win => "You won :D",
             GameState::Loss => "You lost :(",
             GameState::Tie => "Tie :|",
-            GameState::Default => "Think carefully...",
+            GameState::Default => self.ai.debug.as_str(),
         };
 
         html! {
@@ -199,6 +198,7 @@ impl Connect4 {
     fn start_new_game(&mut self) {
         // self.array_board = ArrayBoard::new();
         self.bit_board = BitBoard::new();
+        self.trans_table = TranspositionTable::new(83885931);
         self.game_over = false;
     }
 }
