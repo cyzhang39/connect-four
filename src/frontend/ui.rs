@@ -163,7 +163,7 @@ impl Connect4 {
             GameState::Win => "You won :D",
             GameState::Loss => "You lost :(",
             GameState::Tie => "Tie :|",
-            GameState::Default => self.ai.debug.as_str(),
+            GameState::Default => "Think carefully",
         };
 
         html! {

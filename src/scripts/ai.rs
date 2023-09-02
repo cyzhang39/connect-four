@@ -7,7 +7,7 @@ const WIDTH: usize = 7;
 
 pub struct AIGame {
     column_order: [i64; WIDTH],
-    pub debug: String,
+    //pub debug: String,
 }
 
 impl AIGame {
@@ -20,7 +20,7 @@ impl AIGame {
 
             AIGame {
                 column_order,
-                debug: String::new(),
+                //debug: String::new(),
             }
     }
 
@@ -31,7 +31,7 @@ impl AIGame {
         // if game.get_num_moves() == 9 {
         //     return game.play_turn(4);
         // }
-        self.debug = String::new();
+        //self.debug = String::new();
 
         
         
@@ -49,7 +49,7 @@ impl AIGame {
                 let init:i64 = ((WIDTH * HEIGHT + 1 - game.get_num_moves()) / 2) as i64;
                 game.play_move(chosen_col);
                 let score = -self.negamax(game, trans_table, -init, init, 20);
-                self.debug.push_str(&format!("col:{}|score:{} ", chosen_col.to_string(), score.to_string()));
+                //self.debug.push_str(&format!("col:{}|score:{} ", chosen_col.to_string(), score.to_string()));
                 let _ = game.undo_move(chosen_col);
 
                 if score > best_score {
