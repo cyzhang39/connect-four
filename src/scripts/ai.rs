@@ -26,7 +26,10 @@ impl AIGame {
 
     pub fn make_move(&mut self, game: &mut BitBoard, trans_table: &mut TranspositionTable) -> Result<GameState, String> {
         // if game.get_num_moves() == 7 {
-        //     return game.play_turn(1);
+        //     return game.play_turn(5);
+        // }
+        // if game.get_num_moves() == 9 {
+        //     return game.play_turn(4);
         // }
         self.debug = String::new();
 
@@ -45,7 +48,7 @@ impl AIGame {
 
                 let init:i64 = ((WIDTH * HEIGHT + 1 - game.get_num_moves()) / 2) as i64;
                 game.play_move(chosen_col);
-                let score = -self.negamax(game, trans_table, -init, init, 41);
+                let score = -self.negamax(game, trans_table, -init, init, 20);
                 self.debug.push_str(&format!("col:{}|score:{} ", chosen_col.to_string(), score.to_string()));
                 let _ = game.undo_move(chosen_col);
 
