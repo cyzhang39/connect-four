@@ -7,7 +7,8 @@ const WIDTH: usize = 7;
 
 pub struct AIGame {
     column_order: [i64; WIDTH],
-    //pub debug: String,
+    pub debug: String,
+    pub bound: usize,
 }
 
 impl AIGame {
@@ -20,26 +21,36 @@ impl AIGame {
 
             AIGame {
                 column_order,
-                //debug: String::new(),
+                debug: String::new(),
+                bound: 0,
             }
     }
 
     pub fn make_move(&mut self, game: &mut BitBoard, trans_table: &mut TranspositionTable) -> Result<GameState, String> {
-        // if game.get_num_moves() == 7 {
-        //     return game.play_turn(5);
-        // }
-        // if game.get_num_moves() == 9 {
-        //     return game.play_turn(4);
-        // }
-        //self.debug = String::new();
+        let mut best_move: usize = 0;
+        let mut best_score: i64 = std::i64::MIN;
+        let mut depth: i64 = 20;
+        self.debug = String::new();
+        self.bound = game.get_num_moves();
+        // self.debug.push_str(&game.total_mask.to_string());
+        // self.debug.push_str(&format!("{:b}", game.total_mask));
 
-        
-        
-        let mut best_move = 0;
-        let mut best_score = std::i64::MIN;
+        if game.total_mask == 400556032 {        
+            return game.play_turn(5);
+        } else if game.total_mask == 35297165312 {
+            return game.play_turn(4);
+        }
+
+        // if self.bound <= 6 {
+        //     depth = 15;
+        // } 
+
+        // if self.bound == 7 {
+        //     trans_table.reset();
+        // }
 
         for col in 0..WIDTH {
-            let chosen_col = self.column_order[col].try_into().unwrap(); 
+            let chosen_col: usize = self.column_order[col].try_into().unwrap(); 
 
             if game.is_move_valid(chosen_col) {
                 if game.is_winning_move(chosen_col) {
@@ -48,17 +59,21 @@ impl AIGame {
 
                 let init:i64 = ((WIDTH * HEIGHT + 1 - game.get_num_moves()) / 2) as i64;
                 game.play_move(chosen_col);
-                let score = -self.negamax(game, trans_table, -init, init, 20);
-                //self.debug.push_str(&format!("col:{}|score:{} ", chosen_col.to_string(), score.to_string()));
+                let score = -self.negamax(game, trans_table, -init, init, depth);
+                // self.debug.push_str(&format!("col:{} |", chosen_col.to_string()));
+
+                // self.debug.push_str(&format!("(col:{}, score:{}) ", (6 - chosen_col).to_string(), score.to_string()));
                 let _ = game.undo_move(chosen_col);
 
                 if score > best_score {
                     best_move = chosen_col;
+                    // self.debug.push_str(&format!("best:{} |", best_move.to_string()));
                     best_score = score;
                 }
             }
         }
-
+        
+        // self.debug.push_str(&format!("best:{} |", best_move.to_string()));
         return game.play_turn(best_move);
     }
 

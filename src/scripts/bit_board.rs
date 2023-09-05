@@ -1,6 +1,3 @@
-use std::collections::hash_map::DefaultHasher;
-use std::hash::{Hash, Hasher};
-
 const HEIGHT: usize = 6; 
 const WIDTH: usize = 7;
 
@@ -17,6 +14,7 @@ use GameState::{Win, Loss, Tie, Default};
 pub struct BitBoard {
     pub player_mask: u64, //first 49 bits used to store current player position
     pub total_mask: u64, //first 49 bits used to store all played coins
+    pub complete_board: u64,
     pub bottom_row: u64,
     num_moves: usize, //total number of moves played in the current game
     pub red_turn: bool, //used to signify whose turn it is
@@ -35,6 +33,7 @@ impl BitBoard {
         Self {
             player_mask: 0, 
             total_mask: 0,
+            complete_board: (temp << HEIGHT) - 1,
             bottom_row: temp,
             num_moves: 0,
             red_turn: true,
@@ -63,14 +62,7 @@ impl BitBoard {
     }
 
     pub fn get_unique_key(&self) -> u64 {
-        // let board1 = self.player_mask;
-        // let board2 = self.total_mask;
-
-        // let mut hasher = DefaultHasher::new();
-        // board1.hash(&mut hasher);
-        // board2.hash(&mut hasher);
-        // hasher.finish()
-        let current = if self.red_turn{self.player_mask} else {self.player_mask ^ self.total_mask};
+        let current = if self.red_turn {self.player_mask} else {self.player_mask ^ self.total_mask};
         //let current = self.player_mask;
         return current + self.total_mask;
     }
@@ -134,19 +126,16 @@ impl BitBoard {
         self.play_move(col);
         let position:u64 = if self.red_turn {self.total_mask ^ self.player_mask}  else {self.player_mask};
         self.undo_move(col);
-
         //horizontal direction
         let n:u64 = position & (position >> (HEIGHT + 1));
         if n & (n >> 2 * (HEIGHT + 1)) > 0 {
             return true;
         }
-
         //vertical direction
         let n:u64 = position & (position >> 1);
         if n & (n >> 2) > 0 {
             return true;
         }
-
         //diagonal = (/) direction
         let n:u64 = position & (position >> HEIGHT);
         if n & (n >> 2 * HEIGHT) > 0 {

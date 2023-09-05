@@ -523,7 +523,7 @@ async function __wbg_init(input) {
     if (wasm !== undefined) return wasm;
 
     if (typeof input === 'undefined') {
-        input = new URL('connect4-ai-b581c1ab1ce267a7_bg.wasm', import.meta.url);
+        input = new URL('connect4-ai-dbcead76ad9e32f9_bg.wasm', import.meta.url);
     }
     const imports = __wbg_get_imports();
 

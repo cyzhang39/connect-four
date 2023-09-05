@@ -46,7 +46,7 @@ impl Component for Connect4 {
                             if let Ok(state2) = self.ai.make_move(&mut self.bit_board, &mut self.trans_table) {
                                 self.handle_game_state(state2);
                             }else {
-                                println!("Column full, chooszce another column");
+                                println!("Column full, choose another column");
                             }
                         }
                     } else {
@@ -101,14 +101,6 @@ impl Component for Connect4 {
 
 impl Connect4 {
     fn render_cell(&self, row: usize, column: usize) -> Html {
-        // let index = ((HEIGHT - 1 - row) * WIDTH) + column;
-        // let cell = self.array_board.board[index];
-
-        // let coin_class = match cell {
-        //     Cell::Red => "red",
-        //     Cell::Yellow => "yellow",
-        //     Cell::Empty => "empty",
-        // };
         let red_board = self.bit_board.player_mask;
         let yellow_board = self.bit_board.total_mask ^ red_board;
         let align = self.bit_board.bottom_col_mask(column) << (HEIGHT - 1 - row);
@@ -160,10 +152,10 @@ impl Connect4 {
 
     fn render_game_state_message(&self) -> Html {
         let state_message = match self.bit_board.state {
-            GameState::Win => "You won :D",
-            GameState::Loss => "You lost :(",
-            GameState::Tie => "Tie :|",
-            GameState::Default => "Think carefully",
+            GameState::Win => "You won! :D",
+            GameState::Loss => "You lost! :(",
+            GameState::Tie => "Tie! :|",
+            GameState::Default => "Think carefully!",
         };
 
         html! {
